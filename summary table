@@ -1,0 +1,32 @@
+Sub macros()
+  ' add this Sub to the file summary.xlsm and open tables which you want to copy to the summary table
+  i = 1
+  While i <= Application.Windows.Count
+	  Application.Windows(i).Activate
+	  If Sheets(1).Name <> "summary" Then
+		  ' inserting the column with workbooks’ names
+		  titl = Application.ActiveWorkbook.Name	
+		  Range("A1").Select
+		  ActiveCell.Formula = titl
+		  ActiveCell.SpecialCells(xlLastCell).Select
+		  B = ActiveCell.Address
+		
+		  'coping whole data from each worksheet
+		  Range("A1", B).Select
+		  Selection.Copy
+		  Windows("summary.xlsm").Activate
+		  Range("A1").Select
+		  ActiveCell.SpecialCells(xlLastCell).Select
+		  B = ActiveCell.Address
+		  Cells(Val(Right(B, Len(B) - InStr(1, B, "$") - 2)) + 1, 1).Select
+		  Selection.Insert
+		
+		  Application.CutCopyMode = False
+		  Application.Windows(titl).Close False, , False
+	  End If	
+	  i = i + 1
+   Wend
+End Sub
+
+
+
